@@ -17,7 +17,8 @@ setsystem = System(f1=1, #10^f1 freq lower bound
                     t0=0,
                     freqs = 100, #number of frequencies to sweep through
                     stepres = 200,
-                    numwavels = 4) #num of wavelengths simulated per freq)
+                    numwavels = 4, #num of wavelengths simulated per freq)
+                    params = params)
 
 def make_system(params):
     system = System(params)
@@ -25,6 +26,7 @@ def make_system(params):
 
 def slope_func(init, t, system):
     unpack(system)
+    unpack(params)
     vin, vm, vout = init
 
     dvin = 2 * np.pi * A * f * np.cos(2*np.pi*f*t)
