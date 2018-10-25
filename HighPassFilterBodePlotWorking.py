@@ -5,9 +5,9 @@ init = State(Vin=0,
              Vout=0)
 
 params = Params(C1=10e-7, #Capacitor value 1
-         C2=10e-9, #Capacitor value 2
-         R1=300, #Resistor value 1
-         R2=15000) #resistor value 2
+         C2=10e-7, #Capacitor value 2
+         R1=150, #Resistor value 1
+         R2=150) #resistor value 2
 
 
 setsystem = System(f1=1, #10^f1 freq lower bound
@@ -15,18 +15,19 @@ setsystem = System(f1=1, #10^f1 freq lower bound
                     A=0.5, #Amplitude of Vin wave
                     init=init,
                     t0=0,
-                    freqs = 100, #number of frequencies to sweep through
+                    freqs = 10, #number of frequencies to sweep through
                     stepres = 200,
-                    numwavels = 4, #num of wavelengths simulated per freq)
-                    params = params)
+                    numwavels = 4) #num of wavelengths simulated per freq)
 
-def make_system(params):
-    system = System(params)
+def make_system(params, setsystem):
+    setsystem.set(params = params)
+    system = setsystem
     return system
 
 def slope_func(init, t, system):
     unpack(system)
-    unpack(params)
+    C1, C2, R1, R2 = system.params
+
     vin, vm, vout = init
 
     dvin = 2 * np.pi * A * f * np.cos(2*np.pi*f*t)
@@ -48,10 +49,12 @@ def run_bode(system):
         tail = int(details.nfev/(2*np.pi*numwavels))
         amplitudeM = results.Vout.tail(tail).ptp()
         Re[f] = amplitudeM
+    print('bode run')
     return Re
 
 def run_calc(system):
     unpack(system)
+    C1, C2, R1, R2 = system.params
 
     farray = np.logspace(f1, f2, freqs)
     C = TimeSeries()
@@ -65,8 +68,8 @@ def run_calc(system):
 
     return C
 
-def error_func(params):
-    system = make_system(params)
+def error_func(params, setsystem):
+    system = make_system(params, setsystem)
 
     results = run_bode(system)
     data = run_calc(system)
@@ -74,17 +77,21 @@ def error_func(params):
     errors = results - data
     return errors
 
-error_func(params)
+best_params, fit_details = fit_leastsq(error_func, params, setsystem)
+
+print(best_params)
+#error_func(params)
 
 #best_params, fit
+
 """
-system = make_system(params)
-results = run_bode()
+system = make_system(params, setsystem)
+results = run_bode(system)
 fig = plt.figure()
 ax = fig.add_subplot(111)
 ax.set_xscale('log')
 lns1 = ax.plot(results, label = 'simulated')
-lns2 = ax.plot(run_calc(), label = 'calculation')
+lns2 = ax.plot(run_calc(system), label = 'calculation')
 lns = lns1+lns2
 labs = [l.get_label() for l in lns]
 ax.legend(lns, labs, loc = 'best')
