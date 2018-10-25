@@ -4,14 +4,14 @@ init = State(Vin=0,
              Vm=0,
              Vout=0)
 
-params = Params(C1=10e-7, #Capacitor value 1
-         C2=10e-7, #Capacitor value 2
-         R1=150, #Resistor value 1
+params = Params(R1=150, #Resistor value 1
          R2=150) #resistor value 2
 
 
 setsystem = System(f1=1, #10^f1 freq lower bound
                     f2=5, #10^f2 freq upper bound
+                    tau1 = 1.5e-5,
+                    tau2 = 1.5e-5,
                     A=0.5, #Amplitude of Vin wave
                     init=init,
                     t0=0,
@@ -26,7 +26,9 @@ def make_system(params, setsystem):
 
 def slope_func(init, t, system):
     unpack(system)
-    C1, C2, R1, R2 = system.params
+    R1, R2 = system.params
+    C1 = tau1/R1
+    C2 = tau2/R2
 
     vin, vm, vout = init
 
@@ -54,7 +56,9 @@ def run_bode(system):
 
 def run_calc(system):
     unpack(system)
-    C1, C2, R1, R2 = system.params
+    R1, R2 = system.params
+    C1 = tau1/R1
+    C2 = tau2/R2
 
     farray = np.logspace(f1, f2, freqs)
     C = TimeSeries()
@@ -75,17 +79,15 @@ def error_func(params, setsystem):
     data = run_calc(system)
 
     errors = results - data
+
     return errors
 
-best_params, fit_details = fit_leastsq(error_func, params, setsystem)
+best_params, fit_details = fit_leastsq(error_func, params, setsystem, maxfev=1)
 
-print(best_params)
-#error_func(params)
+print(best_params, setsystem.tau1/best_params.R1, setsystem.tau2/best_params.R2)
 
-#best_params, fit
 
-"""
-system = make_system(params, setsystem)
+system = make_system(best_params, setsystem)
 results = run_bode(system)
 fig = plt.figure()
 ax = fig.add_subplot(111)
@@ -95,5 +97,5 @@ lns2 = ax.plot(run_calc(system), label = 'calculation')
 lns = lns1+lns2
 labs = [l.get_label() for l in lns]
 ax.legend(lns, labs, loc = 'best')
-savefig('graphs\BodePlotLowRes.png')
-"""
+savefig('graphs\BodePlotLowRes2.png')
+
