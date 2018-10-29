@@ -20,18 +20,33 @@ setsystem = System(f1=1, #10^f1 freq lower bound
                     numwavels = 4) #num of wavelengths simulated per freq)
 
 def make_system(params, setsystem):
+'''
+	@param params: the configuration for the circuit (R1, R2)
+
+	Creates a system object representing the circuit with the correct configuration.
+'''
     setsystem.set(params = params)
     system = setsystem
     return system
 
 def slope_func(init, t, system):
+'''
+	@param init: the initial state of the system 
+	@param t: the time at which this function will be evaluated 
+	@param system: the system object 
+
+	Returns the changes in Vin, Vm, and Vout
+'''
     unpack(system)
     R1, R2 = system.params
+
+    # Calculates C1, C2 based on R1 and R2
     C1 = tau1/R1
     C2 = tau2/R2
 
     vin, vm, vout = init
 
+    # ODEs for Vin, Vm, Vout
     dvin = 2 * np.pi * A * f * np.cos(2*np.pi*f*t)
     dvm = dvin - (vm/R1 + vout/R2) / C1
     dvout = dvm - vout / (R2*C2)
@@ -39,15 +54,26 @@ def slope_func(init, t, system):
     return dvin, dvm, dvout
 
 def run_bode(system):
+'''
+	@param system: the system object 
+
+	Generates a bode plot for a series of frequencies 
+'''
     unpack(system)
 
+    # Creates a set of frequencies on a log scale
     farray = np.logspace(f1, f2, freqs)
+
     Re = TimeSeries()
 
     for f in farray:
         system.set(f=f, t_end = numwavels / f)
+
+        # Determines the maximum step length, to force the bode plot to run faster
         max_step = (system.t_end - t0) / (stepres)
         results, details = run_ode_solver(system, slope_func, max_step = max_step)
+
+        # Uses nfev for the # of steps and to select out the tail
         tail = int(details.nfev/(2*np.pi*numwavels))
         amplitudeM = results.Vout.tail(tail).ptp()
         Re[f] = amplitudeM
