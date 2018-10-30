@@ -4,11 +4,11 @@ init = State(Vin=0,
              Vm=0,
              Vout=0)
 
-system = System(C1=10e-7, #Capacitor value 1
-                C2=10e-7, #Capacitor value 2
-                R1=15.8, #Resistor value 1
-                R2=15.8, #resistor value 2
-                f=100000,
+system = System(C1=10e-3, #Capacitor value 1
+                C2=10e-3, #Capacitor value 2
+                R1=10000, #Resistor value 1
+                R2=10000, #resistor value 2
+                f=10000,
                 A=0.5, #Amplitude of Vin wave
                 init=init,
                 t0=0,
@@ -27,9 +27,9 @@ def slope_func(init, t, system):
     return dvin, dvm, dvout
 
 def run_bode():
+    system.set(t_end = system.numwavels / system.f)
     unpack(system)
-    system.set(f=f, t_end = numwavels / f)
-    max_step = (system.t_end - t0) / (stepres)
+    max_step = (t_end - t0) / (stepres)
     results, details = run_ode_solver(system, slope_func, max_step = max_step)
     tail = int(details.nfev/(2*np.pi*numwavels))
     amplitudeM = results.Vout.tail(tail).ptp()
@@ -47,6 +47,7 @@ def run_bode():
     print(system.t_end-1/f)
 
     return results
+
 
 fig = plt.figure()
 ax = fig.add_subplot(111)

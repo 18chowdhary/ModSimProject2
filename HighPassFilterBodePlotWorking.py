@@ -1,64 +1,60 @@
 from modsim import *
 
-init = State(Vin=0,
-             Vm=0,
+init = State(Vm=0,
              Vout=0)
 
-params = Params(R1=150, #Resistor value 1
-         R2=150) #resistor value 2
+params = Params(R1=10000, #Resistor value 1
+         R2=10000) #resistor value 2
 
 
-setsystem = System(f1=1, #10^f1 freq lower bound
-                    f2=5, #10^f2 freq upper bound
-                    tau1 = 1.5e-5,
-                    tau2 = 1.5e-5,
-                    A=0.5, #Amplitude of Vin wave
-                    init=init,
-                    t0=0,
-                    freqs = 10, #number of frequencies to sweep through
-                    stepres = 200,
-                    numwavels = 4) #num of wavelengths simulated per freq)
+setsystem = System(tau = 1.5e-7,
+                   A=0.5, #Amplitude of Vin wave
+                   init=init,
+                   t0=0,
+                   freqs = 50, #number of frequencies to sweep through
+                   stepres = 200,
+                   numwavels = 4) #num of wavelengths simulated per freq)
 
 def make_system(params, setsystem):
-'''
-	@param params: the configuration for the circuit (R1, R2)
+	#@param params: the configuration for the circuit (R1, R2)
 
-	Creates a system object representing the circuit with the correct configuration.
-'''
+	#reates a system object representing the circuit with the correct configuration.
+    R1, R2 = params
+
     setsystem.set(params = params)
+    setsystem.set(C1 = setsystem.tau/R1, C2 = setsystem.tau/R2)
+    fc = 1/(2*np.pi*setsystem.tau)
+    flow = int(np.log10(fc))-2
+    fhigh = int(np.log10(fc))+2
+    setsystem.set(f1 = flow, f2 = fhigh)
     system = setsystem
     return system
 
 def slope_func(init, t, system):
-'''
-	@param init: the initial state of the system 
-	@param t: the time at which this function will be evaluated 
-	@param system: the system object 
 
-	Returns the changes in Vin, Vm, and Vout
-'''
+	#@param init: the initial state of the system
+	#@param t: the time at which this function will be evaluated
+	#@param system: the system object
+
+	#Returns the changes in Vin, Vm, and Vout
     unpack(system)
     R1, R2 = system.params
 
-    # Calculates C1, C2 based on R1 and R2
-    C1 = tau1/R1
-    C2 = tau2/R2
-
-    vin, vm, vout = init
+    vm, vout = init
 
     # ODEs for Vin, Vm, Vout
     dvin = 2 * np.pi * A * f * np.cos(2*np.pi*f*t)
     dvm = dvin - (vm/R1 + vout/R2) / C1
     dvout = dvm - vout / (R2*C2)
 
-    return dvin, dvm, dvout
+    return dvm, dvout
 
 def run_bode(system):
-'''
-	@param system: the system object 
 
-	Generates a bode plot for a series of frequencies 
-'''
+	#@param system: the system object
+
+	#Generates a bode plot for a series of frequencies
+
     unpack(system)
 
     # Creates a set of frequencies on a log scale
@@ -83,8 +79,6 @@ def run_bode(system):
 def run_calc(system):
     unpack(system)
     R1, R2 = system.params
-    C1 = tau1/R1
-    C2 = tau2/R2
 
     farray = np.logspace(f1, f2, freqs)
     C = TimeSeries()
@@ -99,6 +93,7 @@ def run_calc(system):
     return C
 
 def error_func(params, setsystem):
+    print(params)
     system = make_system(params, setsystem)
 
     results = run_bode(system)
@@ -108,9 +103,9 @@ def error_func(params, setsystem):
 
     return errors
 
-best_params, fit_details = fit_leastsq(error_func, params, setsystem, maxfev=1)
+best_params, fit_details = fit_leastsq(error_func, params, setsystem, maxfev=7)
 
-print(best_params, setsystem.tau1/best_params.R1, setsystem.tau2/best_params.R2)
+print(best_params, setsystem.tau/best_params.R1, setsystem.tau/best_params.R2)
 
 
 system = make_system(best_params, setsystem)
@@ -124,4 +119,3 @@ lns = lns1+lns2
 labs = [l.get_label() for l in lns]
 ax.legend(lns, labs, loc = 'best')
 savefig('graphs\BodePlotLowRes2.png')
-
