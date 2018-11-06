@@ -3,13 +3,13 @@ from modsim import *
 init = State(Vm=0,
              Vout=0)
 
-params = Params(R1=10000, #Resistor value 1
-                R2=10000, #resistor value 2
+params = Params(R1=1000000, #Resistor value 1
+                R2=1000000, #resistor value 2
                 C1=1.5e-11,
                 C2=1.5E-11)
 
 
-setsystem = System(tau = 1.5e-7,
+setsystem = System(tau = 1.5e-5,
                    A=0.5, #Amplitude of Vin wave
                    init=init,
                    t0=0,
@@ -80,36 +80,16 @@ def run_bode(system):
     print('done bode')
     return Re
 
-def run_freq(system):
-    print('start freq')
-    fc = 1/(2*np.pi * system.tau)
-    print(fc)
-    system.set(f = fc)
-    system.set(t_end = system.numwavels / system.f)
-    unpack(system)
-
-
-    max_step = (t_end - t0) / (stepres)
-
-    results, details = run_ode_solver(system, slope_func, max_step = max_step)
-    tail = int(details.nfev/(2*np.pi*numwavels))
-    amplitudeM = results.Vout.tail(tail).ptp()
-
-    print('done freq')
-    return amplitudeM
-
-
 def run_calc(system):
     unpack(system)
-    R1, R2, C1, C2 = system.params
 
     farray = np.logspace(f1, f2, freqs)
     C = TimeSeries()
 
     for f in farray:
         w = 2*np.pi*f
-        rcw1 = R1*C1*w
-        rcw2 = R2*C2*w
+        rcw1 = tau*w
+        rcw2 = tau*w
         amplitudeC = (rcw1*rcw2) / (np.sqrt(1 + rcw1**2) * np.sqrt(1 + rcw2**2))
         C[f] = amplitudeC
 
@@ -119,8 +99,6 @@ def error_func(params, setsystem):
     system = make_system(params, setsystem)
     print(params)
     print('start error')
-    #ampM = run_freq(system)
-    #ampC = system.A
 
     results = run_bode(setsystem)
     calcs = run_calc(setsystem)
@@ -130,8 +108,8 @@ def error_func(params, setsystem):
     return errors
 
 
-best_params, fit_details = fit_leastsq(error_func, params, setsystem, maxfev = 5)
-print(best_params, setsystem.tau/best_params.R1, setsystem.tau/best_params.R2)
+best_params, fit_details = fit_leastsq(error_func, params, setsystem, maxfev = 1000)
+print(best_params)
 
 
 system = make_system(best_params, setsystem)
@@ -144,4 +122,4 @@ lns2 = ax.plot(run_calc(system), label = 'calculation')
 lns = lns1+lns2
 labs = [l.get_label() for l in lns]
 ax.legend(lns, labs, loc = 'best')
-savefig('graphs\BodePlotLowRes2.png')
+savefig('graphs\BodePlotLowRes4.png')
