@@ -1,0 +1,586 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Project\_2}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{modsim-project-2-optimal-configuration-of-a-second-order-high-pass-filter}{%
+\section{ModSim Project 2: Optimal Configuration of a Second Order High
+Pass
+Filter}\label{modsim-project-2-optimal-configuration-of-a-second-order-high-pass-filter}}
+
+\hypertarget{shreya-chowdhary-and-kyle-mccracken}{%
+\subsection{Shreya Chowdhary and Kyle
+McCracken}\label{shreya-chowdhary-and-kyle-mccracken}}
+
+    \hypertarget{what-is-the-configuration-of-resistors-and-capacitors-in-a-second-order-high-pass-filter-that-would-result-in-a-bode-plot-that-aligns-perfectly-or-as-close-as-possible-to-the-theoretical-model-for-a-high-pass-filter}{%
+\subsubsection{What is the configuration of resistors and capacitors in
+a second order high pass filter that would result in a bode plot that
+aligns perfectly (or as close as possible) to the theoretical model for
+a high pass
+filter?}\label{what-is-the-configuration-of-resistors-and-capacitors-in-a-second-order-high-pass-filter-that-would-result-in-a-bode-plot-that-aligns-perfectly-or-as-close-as-possible-to-the-theoretical-model-for-a-high-pass-filter}}
+
+The bode plots for second order high pass filters don't exactly match
+the theoretical model for a second-order high pass filter (while
+first-order high pass filters do match the theoretical model). This is
+due to a exchange of current between the two high-pass filters. Thus, we
+decided to create a model that would determine the optimal combination
+of resistors and capacitors for a given tau to minimize current flow
+between the two high pass filters in order to minimize the error between
+the theoretical bode plot and the simulated bode plot.
+
+    \hypertarget{methodology}{%
+\subsubsection{Methodology}\label{methodology}}
+
+We consider the following circuit:
+
+In this circuit, we use \(V_{in}\) where \(V_{in} = A\sin{2\pi{ft}}\) to
+represent the sinusoidal input waveform, \(V_m\) to represent the
+voltage at the branch between the two high-pass filters, and \(V_{out}\)
+to represent the output voltage. We use our voltages as the stocks for
+our stock and flow diagram (shown below).
+
+    Through circuit analysis, we derived differential equations for the
+flows:
+
+\[\frac{dV_{in}}{dt} = 2\pi{Af\cos{2\pi{ft}}}\]
+\[\frac{dV_m}{dt} = \frac{dV_{in}}{dt} - \frac{\frac{V_m}{R_1} + \frac{V_{out}}{R_2}}{C_1}\]
+\[\frac{dV_{out}}{dt} = \frac{dV_{out}}{dt} - \frac{V_{out}}{R_2C_2}\]
+
+The only assumption we made was a certain amount of instantaneousness in
+the change of voltage, which is a valid assumption based on our
+knowledge of how voltage responds to current.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c+c1}{\PYZsh{} Configure Jupyter so figures appear in the notebook}
+        \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+        
+        \PY{c+c1}{\PYZsh{} Configure Jupyter to display the assigned value after an assignment}
+        \PY{o}{\PYZpc{}}\PY{k}{config} InteractiveShell.ast\PYZus{}node\PYZus{}interactivity=\PYZsq{}last\PYZus{}expr\PYZus{}or\PYZus{}assign\PYZsq{}
+        
+        \PY{k+kn}{from} \PY{n+nn}{modsim} \PY{k}{import} \PY{o}{*}
+        
+        \PY{c+c1}{\PYZsh{} Creating the initial state}
+        \PY{n}{init} \PY{o}{=} \PY{n}{State}\PY{p}{(}\PY{n}{Vm}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,}
+                     \PY{n}{Vout}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Initializing the configuration of the high pass filter}
+        \PY{n}{params} \PY{o}{=} \PY{n}{Params}\PY{p}{(}\PY{n}{R1}\PY{o}{=}\PY{l+m+mi}{1000000}\PY{p}{,}
+                        \PY{n}{R2}\PY{o}{=}\PY{l+m+mi}{1000000}\PY{p}{,}
+                        \PY{n}{C1}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}11}\PY{p}{,}
+                        \PY{n}{C2}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}11}\PY{p}{)}
+        
+        
+        \PY{c+c1}{\PYZsh{} Initializing the system configurations }
+        \PY{c+c1}{\PYZsh{} freqs is the number of frequencies to sweep through }
+        \PY{c+c1}{\PYZsh{} numwavels is the number of wavelengths simulated per frequency }
+        \PY{c+c1}{\PYZsh{} stepres is ...?}
+        \PY{n}{setsystem} \PY{o}{=} \PY{n}{System}\PY{p}{(}\PY{n}{tau} \PY{o}{=} \PY{l+m+mf}{1.5e\PYZhy{}7}\PY{p}{,}
+                           \PY{n}{A}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{c+c1}{\PYZsh{}Amplitude of Vin wave}
+                           \PY{n}{init}\PY{o}{=}\PY{n}{init}\PY{p}{,}
+                           \PY{n}{t0}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,}
+                           \PY{n}{freqs} \PY{o}{=} \PY{l+m+mi}{8}\PY{p}{,}
+                           \PY{n}{stepres} \PY{o}{=} \PY{l+m+mi}{200}\PY{p}{,}
+                           \PY{n}{numwavels} \PY{o}{=} \PY{l+m+mi}{4}\PY{p}{)}
+        
+        \PY{k}{def} \PY{n+nf}{make\PYZus{}system}\PY{p}{(}\PY{n}{params}\PY{p}{,} \PY{n}{setsystem}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    Creates a system object.}
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{c+c1}{\PYZsh{} param params: the configuration for the circuit (R1, R2)}
+                
+            \PY{c+c1}{\PYZsh{} Creates a system object representing the circuit with the correct configuration.}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{making system}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{R1}\PY{p}{,} \PY{n}{R2}\PY{p}{,} \PY{n}{C1}\PY{p}{,} \PY{n}{C2} \PY{o}{=} \PY{n}{params}
+        
+            \PY{c+c1}{\PYZsh{} Sets the configuration of the filter }
+            \PY{n}{setsystem}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{params} \PY{o}{=} \PY{n}{params}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{} Determines the characteristic cut off frequency }
+            \PY{n}{fc} \PY{o}{=} \PY{l+m+mi}{1}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{o}{*}\PY{n}{setsystem}\PY{o}{.}\PY{n}{tau}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{} Determines the maximum and minimum for the range of frequencies }
+            \PY{c+c1}{\PYZsh{} to sweep when creating the bode plot}
+            \PY{c+c1}{\PYZsh{} These frequencies wil be 2 orders of magnitude above and }
+            \PY{c+c1}{\PYZsh{} below the cut\PYZhy{}off frequency}
+            \PY{n}{flow} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{log10}\PY{p}{(}\PY{n}{fc}\PY{p}{)}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}
+            \PY{n}{fhigh} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{log10}\PY{p}{(}\PY{n}{fc}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{2}
+            
+            \PY{n}{setsystem}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{f1} \PY{o}{=} \PY{n}{flow}\PY{p}{,} \PY{n}{f2} \PY{o}{=} \PY{n}{fhigh}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{made system}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{system} \PY{o}{=} \PY{n}{setsystem}
+        
+            \PY{k}{return} \PY{n}{system}
+        
+        \PY{k}{def} \PY{n+nf}{slope\PYZus{}func}\PY{p}{(}\PY{n}{init}\PY{p}{,} \PY{n}{t}\PY{p}{,} \PY{n}{system}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    Determines the ODEs for Vin, Vm, and Vout, which will be used }
+        \PY{l+s+sd}{    later for the ODE solver.}
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{c+c1}{\PYZsh{} param init: the initial state of the system}
+            \PY{c+c1}{\PYZsh{} param t: the time at which this function will be evaluated}
+            \PY{c+c1}{\PYZsh{} param system: the system object}
+        
+            \PY{n}{unpack}\PY{p}{(}\PY{n}{system}\PY{p}{)}
+            \PY{n}{R1}\PY{p}{,} \PY{n}{R2}\PY{p}{,} \PY{n}{C1}\PY{p}{,} \PY{n}{C2} \PY{o}{=} \PY{n}{system}\PY{o}{.}\PY{n}{params}
+        
+            \PY{n}{vm}\PY{p}{,} \PY{n}{vout} \PY{o}{=} \PY{n}{init}
+        
+            \PY{c+c1}{\PYZsh{} ODEs for Vin, Vm, Vout}
+            \PY{c+c1}{\PYZsh{} We treat dVin as a variable because Vin is not influenced by Vm or Vout, but influences both}
+            \PY{n}{dvin} \PY{o}{=} \PY{l+m+mi}{2} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{pi} \PY{o}{*} \PY{n}{A} \PY{o}{*} \PY{n}{f} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{o}{*}\PY{n}{f}\PY{o}{*}\PY{n}{t}\PY{p}{)}
+            \PY{n}{dvm} \PY{o}{=} \PY{n}{dvin} \PY{o}{\PYZhy{}} \PY{p}{(}\PY{n}{vm}\PY{o}{/}\PY{n}{R1} \PY{o}{+} \PY{n}{vout}\PY{o}{/}\PY{n}{R2}\PY{p}{)} \PY{o}{/} \PY{n}{C1}
+            \PY{n}{dvout} \PY{o}{=} \PY{n}{dvm} \PY{o}{\PYZhy{}} \PY{n}{vout} \PY{o}{/} \PY{p}{(}\PY{n}{R2}\PY{o}{*}\PY{n}{C2}\PY{p}{)}
+        
+            \PY{k}{return} \PY{n}{dvm}\PY{p}{,} \PY{n}{dvout}
+        
+        \PY{k}{def} \PY{n+nf}{run\PYZus{}bode}\PY{p}{(}\PY{n}{system}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    Generates a bode plot for the given set of frequencies.}
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{c+c1}{\PYZsh{} param system: the system object}
+                
+            \PY{n}{unpack}\PY{p}{(}\PY{n}{system}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{start bode}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{} Creates a set of frequencies on a log scale}
+            \PY{n}{farray} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{logspace}\PY{p}{(}\PY{n}{f1}\PY{p}{,} \PY{n}{f2}\PY{p}{,} \PY{n}{freqs}\PY{p}{)}
+        
+            \PY{n}{Re} \PY{o}{=} \PY{n}{TimeSeries}\PY{p}{(}\PY{p}{)}
+        
+            \PY{k}{for} \PY{n}{f} \PY{o+ow}{in} \PY{n}{farray}\PY{p}{:}
+                \PY{n}{system}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{f}\PY{o}{=}\PY{n}{f}\PY{p}{,} \PY{n}{t\PYZus{}end} \PY{o}{=} \PY{n}{numwavels} \PY{o}{/} \PY{n}{f}\PY{p}{)}
+        
+                \PY{c+c1}{\PYZsh{} Determines the maximum step length, to force the bode plot to run faster}
+                \PY{n}{max\PYZus{}step} \PY{o}{=} \PY{p}{(}\PY{n}{system}\PY{o}{.}\PY{n}{t\PYZus{}end} \PY{o}{\PYZhy{}} \PY{n}{t0}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{stepres}\PY{p}{)}
+                \PY{n}{results}\PY{p}{,} \PY{n}{details} \PY{o}{=} \PY{n}{run\PYZus{}ode\PYZus{}solver}\PY{p}{(}\PY{n}{system}\PY{p}{,} \PY{n}{slope\PYZus{}func}\PY{p}{,} \PY{n}{max\PYZus{}step} \PY{o}{=} \PY{n}{max\PYZus{}step}\PY{p}{)}
+        
+                \PY{c+c1}{\PYZsh{} Uses nfev for the \PYZsh{} of steps and to select out the tail}
+                \PY{n}{tail} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{details}\PY{o}{.}\PY{n}{nfev}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{o}{*}\PY{n}{numwavels}\PY{p}{)}\PY{p}{)}
+                \PY{n}{amplitudeM} \PY{o}{=} \PY{n}{results}\PY{o}{.}\PY{n}{Vout}\PY{o}{.}\PY{n}{tail}\PY{p}{(}\PY{n}{tail}\PY{p}{)}\PY{o}{.}\PY{n}{ptp}\PY{p}{(}\PY{p}{)}
+                \PY{n}{Re}\PY{p}{[}\PY{n}{f}\PY{p}{]} \PY{o}{=} \PY{n}{amplitudeM}
+                
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{done bode}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{k}{return} \PY{n}{Re}
+        
+        \PY{k}{def} \PY{n+nf}{run\PYZus{}freq}\PY{p}{(}\PY{n}{system}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    Runs the simulation for a specific frequency (in this case, the cut off frequency).}
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{start freq}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{} Calculates the cut off frequency }
+            \PY{n}{fc} \PY{o}{=} \PY{l+m+mi}{1}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi} \PY{o}{*} \PY{n}{system}\PY{o}{.}\PY{n}{tau}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{fc}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{} Sets the frequency to run the bode plot at to the cut off}
+            \PY{n}{system}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{f} \PY{o}{=} \PY{n}{fc}\PY{p}{)}
+            
+            \PY{n}{system}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{t\PYZus{}end} \PY{o}{=} \PY{n}{system}\PY{o}{.}\PY{n}{numwavels} \PY{o}{/} \PY{n}{system}\PY{o}{.}\PY{n}{f}\PY{p}{)}
+            \PY{n}{unpack}\PY{p}{(}\PY{n}{system}\PY{p}{)}
+        
+        
+            \PY{n}{max\PYZus{}step} \PY{o}{=} \PY{p}{(}\PY{n}{t\PYZus{}end} \PY{o}{\PYZhy{}} \PY{n}{t0}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{stepres}\PY{p}{)}
+        
+            \PY{n}{results}\PY{p}{,} \PY{n}{details} \PY{o}{=} \PY{n}{run\PYZus{}ode\PYZus{}solver}\PY{p}{(}\PY{n}{system}\PY{p}{,} \PY{n}{slope\PYZus{}func}\PY{p}{,} \PY{n}{max\PYZus{}step} \PY{o}{=} \PY{n}{max\PYZus{}step}\PY{p}{)}
+            \PY{n}{tail} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{details}\PY{o}{.}\PY{n}{nfev}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{o}{*}\PY{n}{numwavels}\PY{p}{)}\PY{p}{)}
+            \PY{n}{amplitudeM} \PY{o}{=} \PY{n}{results}\PY{o}{.}\PY{n}{Vout}\PY{o}{.}\PY{n}{tail}\PY{p}{(}\PY{n}{tail}\PY{p}{)}\PY{o}{.}\PY{n}{ptp}\PY{p}{(}\PY{p}{)}
+        
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{done freq}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{k}{return} \PY{n}{amplitudeM}
+        
+        
+        \PY{k}{def} \PY{n+nf}{run\PYZus{}calc}\PY{p}{(}\PY{n}{system}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    Determines what the theoretical model should look like for the given frequencies}
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{n}{unpack}\PY{p}{(}\PY{n}{system}\PY{p}{)}
+            \PY{n}{farray} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{logspace}\PY{p}{(}\PY{n}{f1}\PY{p}{,} \PY{n}{f2}\PY{p}{,} \PY{n}{freqs}\PY{p}{)}
+            \PY{n}{C} \PY{o}{=} \PY{n}{TimeSeries}\PY{p}{(}\PY{p}{)}
+        
+            \PY{k}{for} \PY{n}{f} \PY{o+ow}{in} \PY{n}{farray}\PY{p}{:}
+                
+                \PY{c+c1}{\PYZsh{} Uses circuit theory to calculate the amplitude}
+                \PY{n}{w} \PY{o}{=} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{o}{*}\PY{n}{f}
+                \PY{n}{rcw1} \PY{o}{=} \PY{n}{tau}\PY{o}{*}\PY{n}{w}
+                \PY{n}{rcw2} \PY{o}{=} \PY{n}{tau}\PY{o}{*}\PY{n}{w}
+                \PY{n}{amplitudeC} \PY{o}{=} \PY{p}{(}\PY{n}{rcw1}\PY{o}{*}\PY{n}{rcw2}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{rcw1}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{rcw2}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+                \PY{n}{C}\PY{p}{[}\PY{n}{f}\PY{p}{]} \PY{o}{=} \PY{n}{amplitudeC}
+        
+            \PY{k}{return} \PY{n}{C}
+        
+        \PY{k}{def} \PY{n+nf}{error\PYZus{}func}\PY{p}{(}\PY{n}{params}\PY{p}{,} \PY{n}{setsystem}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    Determines the error between the simulated bode plot and the theoretical bode plot.}
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{n}{system} \PY{o}{=} \PY{n}{make\PYZus{}system}\PY{p}{(}\PY{n}{params}\PY{p}{,} \PY{n}{setsystem}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{params}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{start error}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{c+c1}{\PYZsh{}ampM = run\PYZus{}freq(system)}
+            \PY{c+c1}{\PYZsh{}ampC = system.A}
+        
+            \PY{n}{results} \PY{o}{=} \PY{n}{run\PYZus{}bode}\PY{p}{(}\PY{n}{setsystem}\PY{p}{)}
+            \PY{n}{calcs} \PY{o}{=} \PY{n}{run\PYZus{}calc}\PY{p}{(}\PY{n}{setsystem}\PY{p}{)}
+        
+            \PY{n}{errors} \PY{o}{=} \PY{n}{results} \PY{o}{\PYZhy{}} \PY{n}{calcs}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{done error}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{k}{return} \PY{n}{errors}
+        
+        \PY{k}{def} \PY{n+nf}{plot\PYZus{}bode\PYZus{}plot}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    Plots the simulated bode plot against the theoretical model}
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{p}{)}
+            \PY{n}{ax} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{111}\PY{p}{)}
+            \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xscale}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{log}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{lns1} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{results}\PY{p}{,} \PY{n}{label} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{simulated}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{lns2} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{run\PYZus{}calc}\PY{p}{(}\PY{n}{system}\PY{p}{)}\PY{p}{,} \PY{n}{label} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{calculation}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{lns} \PY{o}{=} \PY{n}{lns1}\PY{o}{+}\PY{n}{lns2}
+            \PY{n}{labs} \PY{o}{=} \PY{p}{[}\PY{n}{l}\PY{o}{.}\PY{n}{get\PYZus{}label}\PY{p}{(}\PY{p}{)} \PY{k}{for} \PY{n}{l} \PY{o+ow}{in} \PY{n}{lns}\PY{p}{]}
+            \PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{lns}\PY{p}{,} \PY{n}{labs}\PY{p}{,} \PY{n}{loc} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{best}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{savefig}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{graphs}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{BodePlotLowRes2.png}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        
+        \PY{n}{best\PYZus{}params}\PY{p}{,} \PY{n}{fit\PYZus{}details} \PY{o}{=} \PY{n}{fit\PYZus{}leastsq}\PY{p}{(}\PY{n}{error\PYZus{}func}\PY{p}{,} \PY{n}{params}\PY{p}{,} \PY{n}{setsystem}\PY{p}{,} \PY{n}{maxfev} \PY{o}{=} \PY{l+m+mi}{500}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{best\PYZus{}params}\PY{p}{,} \PY{n}{setsystem}\PY{o}{.}\PY{n}{tau}\PY{o}{/}\PY{n}{best\PYZus{}params}\PY{o}{.}\PY{n}{R1}\PY{p}{,} \PY{n}{setsystem}\PY{o}{.}\PY{n}{tau}\PY{o}{/}\PY{n}{best\PYZus{}params}\PY{o}{.}\PY{n}{R2}\PY{p}{)}
+        
+        \PY{n}{system} \PY{o}{=} \PY{n}{make\PYZus{}system}\PY{p}{(}\PY{n}{best\PYZus{}params}\PY{p}{,} \PY{n}{setsystem}\PY{p}{)}
+        \PY{n}{results} \PY{o}{=} \PY{n}{run\PYZus{}bode}\PY{p}{(}\PY{n}{system}\PY{p}{)}
+        \PY{n}{plot\PYZus{}bode\PYZus{}plot}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \hypertarget{results}{%
+\subsubsection{Results}\label{results}}
+
+According to our model, the optimal configuration for resistors and
+capacitors in a second order high pass filter with a tau of 1.5e-7 would
+be an \(R_1\) and \(R_2\) of 1e4 and a \(C_1\) and \(C_2\) of 1.5e-11.
+
+    \hypertarget{interpretation}{%
+\subsubsection{Interpretation}\label{interpretation}}
+
+One issue we encountered was with the model choosing Rs and Cs that were
+negative. We circumvented this by forcing the C-values to be positive,
+thus preventing the differential equations from working out correctly if
+the R-values are negative.
+
+The model ends up basically eliminating the second filter entirely, so
+in future iterations, we would put more constraints on the Rs and Cs it
+could choose to prevent it from choosing Rs and Cs for the second filter
+that are effectively close to 0. This is due to the fact that we were
+unable to force the selected R's and C's to match the tau that we set.
+
+In future iterations of the model, we might try to increase the realism
+of the model. For example, there is a standard set of capacitor values
+used in electrical engineering, so we might try to force the model to
+choose exclusively these capacitors and vary the resistor values more
+freely (rather than the other way around).
+
+    \hypertarget{abstract}{%
+\subsubsection{Abstract}\label{abstract}}
+
+What is the configuration of resistors and capacitors in a second order
+high pass filter that would result in a bode plot that aligns perfectly
+(or as close as possible) to the theoretical model for a high pass
+filter?
+
+Our model settles upon resistors that are large enough to reduce the
+current enough for the bode to match. It also chooses a larger second
+resistor to further reduce the effect that current has on the bode plot.
+
+For a high pass filter with a tau of 1.5e-5, our model finds values as
+follows: * R1 = 1.5e5 * R2 = 1.474e7 * C1 = 1.00e-10 * C2 = 1.02e-12
+
+\includegraphics{attachment:BodePlotLowRes4\%20-\%20Copy.png} Amplitude
+vs Frequency for the modelled circuitry.
+
+The results that come out of our model make intuitive sense; however, it
+is very hard to determine whether the model has truly optimized the
+circuit or if it has just found resistor and capacitor values that work
+well. Either way our model is functionalin that it will produce results
+that are valuable for designing and building a real second-order high
+pass filter.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
