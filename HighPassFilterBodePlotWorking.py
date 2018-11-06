@@ -108,7 +108,7 @@ def error_func(params, setsystem):
     return errors
 
 
-best_params, fit_details = fit_leastsq(error_func, params, setsystem, maxfev = 1000)
+best_params, fit_details = fit_leastsq(error_func, params, setsystem, maxfev = 500)
 print(best_params)
 
 
